@@ -1,45 +1,45 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 //大页面模块
-import Index from '@/views/Index-kuang'
-import Dynamicwindfield from '@/views/Dynamic-wind-field'
-import SuperStation from '@/views/Super-station'
-import Pollutionmap from '@/views/Pollution-map'
-import WeatherStation from '@/views/weather-station'
-import NationwidePH from '@/views/Nationwide-PH'
+import Login from '@/views/login'
+import CountAnalyse from '@/views/count-analyse'
+import OnlineSrevice from '@/views/online-srevice'
+import PartManage from '@/views/part-manage'
+import ResourceLook from '@/views/resource-look'
+import Statistical from '@/views/statistical'
 Vue.use(Router)
 
 export default new Router({
     routes: [
         {
             path: '/',
-            name: 'index',
-            component: Index
+            name: 'Login',
+            component: Login
         },
         {
-            path: '/weather',
-            name: 'weather',
-            component: Dynamicwindfield
+            path: '/Statistical',
+            name: 'Statistical',
+            component: Statistical
         },
         {
-            path: '/weatherstation',
-            name: 'weatherstation',
-            component: WeatherStation
+            path: '/CountAnalyse',
+            name: 'CountAnalyse',
+            component: CountAnalyse
         },
         {
-            path: '/pollutionmap',
-            name: 'pollutionmap',
-            component: Pollutionmap
+            path: '/OnlineSrevice',
+            name: 'OnlineSrevice',
+            component: OnlineSrevice
         },
         {
-            path: '/superstation',
-            name: 'superstation',
-            component: SuperStation
+            path: '/PartManage',
+            name: 'PartManage',
+            component: PartManage
         },
         {
-            path: '/nationwidePH',
-            name: 'nationwidePH',
-            component: NationwidePH
+            path: '/ResourceLook',
+            name: 'ResourceLook',
+            component: ResourceLook
         }
     ]
 })
