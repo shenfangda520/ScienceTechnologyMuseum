@@ -26,7 +26,32 @@
             return {
 
             }
-        }
+        },
+        methods:{
+          open3() {
+            this.$notify({
+              title: '成功',
+              message: '这是一条成功的提示消息',
+              type: 'success'
+            });
+          },
+          open4() {
+            this.$notify({
+              title: '警告',
+              message: '这是一条警告的提示消息',
+              type: 'warning'
+            });
+          },
+          open6() {
+            this.$notify.error({
+              title: '错误',
+              message: '这是一条错误的提示消息'
+            });
+          }
+        },
+      mounted(){
+            
+      }
     }
 </script>
 

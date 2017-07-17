@@ -3,7 +3,7 @@
         <!--统计分析页面-->
         <v-header></v-header>
 
-        <v-paneldata></v-paneldata>
+
     </div>
 </template>
 
