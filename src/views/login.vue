@@ -1,12 +1,18 @@
 <template>
     <div class="login">
-        <!--首页部分-->
+        <!--登录页面-->
       <div id="login">
         <div class="top">
         </div>
         <div class="mid">
-          <p class="password"><img src="../assets/img/username.png"/><input type="text" name="" id="userName" value="吴印照" placeholder="用户名"/></p>
-          <p class="username"><img src="../assets/img/password.png"/><input type="password" name="" id="pwd" value="123" placeholder="密码"/></p>
+          <p class="password">
+            <img src="../assets/img/username.png"/>
+            <input type="text" name="" id="userName" value="吴印照" placeholder="用户名"/>
+          </p>
+          <p class="username">
+            <img src="../assets/img/password.png"/>
+            <input type="password" name="" id="pwd" value="123" placeholder="密码"/>
+          </p>
           <p id="btnLogin">登录</p>
         </div>
       </div>

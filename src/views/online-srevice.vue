@@ -1,6 +1,6 @@
 <template>
     <div class="index-box">
-        <!--首页部分-->
+        <!--在线客服页面-->
         <v-header></v-header>
 
       <div id="taking">

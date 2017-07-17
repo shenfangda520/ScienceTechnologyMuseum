@@ -1,6 +1,6 @@
 <template>
     <div class="index-box">
-        <!--首页部分-->
+        <!--地方科技馆管理页面-->
         <v-header></v-header>
 
         <v-paneldata></v-paneldata>
