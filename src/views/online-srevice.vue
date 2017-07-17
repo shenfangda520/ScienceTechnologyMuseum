@@ -1,5 +1,5 @@
 <template>
-    <div class="index-box">
+    <div class="onine">
         <!--在线客服页面-->
         <v-header></v-header>
 
@@ -32,8 +32,8 @@
           </div>
           <div class="speaking">
             <p>
-              <img src="img/smile.png"/>
-              <img src="img/A.png">
+              <img src="../assets/img/smile.png"/>
+              <img src="../assets/img/A.png">
               <select name="">
                 <option value="">默认字体</option>
                 <option value="">微软雅黑</option>
@@ -54,7 +54,7 @@
             </p>
             <textarea id="new-message" placeholder="我想问..."></textarea>
             <div class="btn"><span>发送</span><b>
-              <img src="img/down-jiantou.png"/>
+              <img src="../assets/img/down-jiantou.png"/>
               <div class="news">
                 <p>按Ctrl+Enter发送消息，按Enter换行</p>
                 <p>按Enter发送消息，按Ctrl+Enter换行</p>
@@ -69,7 +69,7 @@
 
 <script>
     export default {
-        name: 'index',
+        name: 'onine',
         data () {
             return {
 
@@ -85,7 +85,7 @@
     height: 100%;
   }
 
-  header {
+  .onine {
     width: 100%;
     height: 120px;
     color: white;

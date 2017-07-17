@@ -5,22 +5,38 @@
         虚拟现实科技馆-VR资源统计分析平台
       </h2>
       <ul>
+
         <li class="yonghu">
-          <img src="img/service.png"/><br/>
+          <router-link id="item-link" to="/OnlineSrevice">
+          <img src="../assets/img/service.png"/><br/>
           <span>在线客服</span>
+          </router-link>
         </li>
+
+
         <li class="guanli">
-          <img src="img/manage.png"/><br/>
+          <router-link id="item-link" to="/PartManage">
+          <img src="../assets/img/manage.png"/><br/>
           <span>地方科技馆管理</span>
+          </router-link>
         </li>
+
+
         <li class="ziyuan">
-          <img src="img/resource.png"/><br/>
+          <router-link id="item-link" to="/ResourceLook">
+          <img src="../assets/img/resource.png"/><br/>
           <span>资源浏览</span>
+          </router-link>
         </li>
+
+
         <li class="tongji">
-          <img src="img/count.png"/><br/>
+          <router-link id="item-link" to="/CountAnalyse">
+          <img src="../assets/img/count.png"/><br/>
           <span>统计分析</span>
+          </router-link>
         </li>
+
       </ul>
     </div>
 </template>
@@ -43,7 +59,16 @@
     height: 100%;
     overflow: hidden;
   }
-
+  .statist{
+    height: 100%;
+  }
+  #item-link{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    text-decoration:none;
+  }
   h2 {
     width: 100%;
     height: 80px;

@@ -86,7 +86,7 @@
       .password input, .username input {
         border: none;
         height: 90%;
-        width: 91%;
+        width: 87%;
         text-indent: 20px;
         position: relative;
         top: -2px;

@@ -1,5 +1,5 @@
 <template>
-    <div class="index-box">
+    <div class="part-manage">
         <!--地方科技馆管理页面-->
         <v-header></v-header>
 
@@ -9,7 +9,7 @@
 
 <script>
     export default {
-        name: 'index',
+        name: 'part-manage',
         data () {
             return {
 
@@ -25,7 +25,7 @@
     height: 100%;
   }
 
-  header {
+  .part-manage {
     width: 100%;
     height: 120px;
     color: white;

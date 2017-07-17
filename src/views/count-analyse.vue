@@ -1,5 +1,5 @@
 <template>
-    <div class="index-box">
+    <div class="count-analyse">
         <!--统计分析页面-->
         <v-header></v-header>
 
@@ -9,7 +9,7 @@
 
 <script>
     export default {
-        name: 'index',
+        name: 'count-analyse',
         data () {
             return {
 
@@ -25,7 +25,7 @@
     height: 100%;
   }
 
-  header {
+  .count-analyse {
     width: 100%;
     height: 120px;
     color: white;

@@ -2,7 +2,7 @@
     <div class="header">
       <div class="top">
         <div class="left">
-          <a style="color: white;text-decoration: none;" href="statistical.html">返回</a>
+          <a style="color: white;text-decoration: none;" href="#/Statistical">返回</a>
         </div>
         <div class="right">
           资源浏览
@@ -11,10 +11,10 @@
       <div class="clear"></div>
       <div class="bottom">
         <ul>
-          <li class="yonghu"><img src="img/yonghu.png">在线客服</li>
-          <li class="guanli"><img src="img/guanli.png">地方科技馆管理</li>
-          <li class="ziyuan"><img src="img/ziyuan.png">资源浏览</li>
-          <li class="tongji"><img src="img/tongji.png">统计分析</li>
+          <li class="yonghu"><img src="../assets/img/yonghu.png">在线客服</li>
+          <li class="guanli"><img src="../assets/img/guanli.png">地方科技馆管理</li>
+          <li class="ziyuan"><img src="../assets/img/ziyuan.png">资源浏览</li>
+          <li class="tongji"><img src="../assets/img/tongji.png">统计分析</li>
         </ul>
       </div>
     </div>
@@ -44,7 +44,7 @@
     height: 100%;
   }
 
-  header {
+  .header {
     width: 100%;
     height: 120px;
     color: white;
