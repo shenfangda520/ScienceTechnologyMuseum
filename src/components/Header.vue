@@ -1,40 +1,58 @@
 <template>
-    <div class="header">
-      <div class="top">
-        <div class="left">
-          <a style="color: white;text-decoration: none;" href="#/Statistical">返回</a>
-        </div>
-        <div class="right">
-          资源浏览
-        </div>
+  <div class="header">
+    <div class="top">
+      <div class="left">
+        <a style="color: white;text-decoration: none;" href="#/Statistical">返回</a>
       </div>
-      <div class="clear"></div>
-      <div class="bottom">
-        <ul>
-          <li class="yonghu"><img src="../assets/img/yonghu.png">在线客服</li>
-          <li class="guanli"><img src="../assets/img/guanli.png">地方科技馆管理</li>
-          <li class="ziyuan"><img src="../assets/img/ziyuan.png">资源浏览</li>
-          <li class="tongji"><img src="../assets/img/tongji.png">统计分析</li>
-        </ul>
+      <div class="right">
+        资源浏览
       </div>
     </div>
+    <div class="clear"></div>
+    <div class="bottom">
+      <ul>
+        <li class="yonghu">
+          <a class="item-link" href="#/OnlineSrevice">
+            <img src="../assets/img/yonghu.png">
+            在线客服
+          </a>
+        </li>
+        <li class="guanli">
+          <a class="item-link" href="#/PartManage">
+            <img src="../assets/img/guanli.png">
+            地方科技馆管理
+          </a>
+        </li>
+        <li class="ziyuan">
+          <a class="item-link" href="#/ResourceLook">
+            <img src="../assets/img/ziyuan.png">
+            资源浏览
+          </a>
+        </li>
+        <li class="tongji">
+          <a class="item-link" href="#/CountAnalyse">
+            <img src="../assets/img/tongji.png">
+            统计分析
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'header',
-        data () {
-            return {
-                msg: 'App'
-            }
-        },
-        mounted(){
+  export default {
+    name: 'header',
+    data () {
+      return {
+        msg: 'App'
+      }
+    },
+    mounted(){
 
-        },
-        methods: {
-
-        }
-    }
+    },
+    methods: {}
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -42,6 +60,14 @@
   html, body {
     width: 100%;
     height: 100%;
+  }
+
+  .item-link {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    color: #fff;
+    text-decoration: none;
   }
 
   .header {

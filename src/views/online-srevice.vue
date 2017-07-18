@@ -7,7 +7,7 @@
         <div class="left">
           <p>用户列表</p>
           <ul>
-            <li>石家庄馆<div>12</div></li>
+            <li>石家庄馆</li>
             <li>廊坊少年宫馆</li>
             <li>杭州馆</li>
             <li>呼和浩特馆</li>
@@ -74,7 +74,237 @@
             return {
 
             }
+        },
+      mounted(){
+        //VRHandle.url = 'data/city-name.json';
+        var ckMuseumCode = undefined;
+        var loginUserCode = 5;
+        $.connection.hub.url = "http://10.6.80.93:8061/signalr";
+        $.connection.hub.logging = true;
+        // Declare a proxy to reference the hub.
+        var chatProxy = $.connection.chatHub;
+
+        //初始化
+        init();
+        //初始化消息个数
+        initMessage();
+
+        setTimeout(function () {
+          addEvent();
+        }, 500);
+
+        //初始化界面用户聊天列表
+        function init() {
+          VRHandle.getMuseumNamesList('GET', function (result) {
+            var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+            if (status) {
+              clearElement();
+              var data = result.Data;
+              var lsItem = data.itemList || [];
+              if (lsItem.length) {
+                var ulElement = $('<ul></ul>');
+                for (var i = 0, length = lsItem.length; i < length; i++) {
+                  var item = lsItem[i];
+                  var liElement = $('<li data-code="' + item.museumCode + '">' + ((item.museumName + ' - ' + item.regionName) || 'Undefined') + '<div class="no-read-message"><span></span></div>' + '</li>');
+                  ulElement.append(liElement);
+                }
+                $('.left').find('p').after(ulElement);
+              }
+            }
+            else {
+              alert(result.message);
+            }
+          });
         }
+
+        //初始化消息个数
+        function initMessage() {
+          // Start the connection.
+          $.connection.hub.start({jsonp: true}).done(function () {
+            // Call the Send method on the hub.
+            //private void RefreshAndGetNoReadNum(int userId)
+            console.log("connection started!");
+            chatProxy.server.refreshAndGetNoReadNum(loginUserCode);
+            loadHistoryOne();
+          }).fail(function () {
+            console.log("connection fail!");
+            return false;
+          });
+
+          //接收未读消息的个数
+          // Create a function that the hub can call to broadcast messages.
+          chatProxy.client.showNoReadNum = function (result) {
+            result = typeof result === 'string' ? JSON.parse(result) : result;
+            if (result.status !== -1) {
+              var row = result.row;
+              if(row.length) {
+                var item = row[0];
+                if (ckMuseumCode && ckMuseumCode === item.ID.toString()) {
+
+                }
+                else {
+                  setMessage(result);
+                }
+              }
+            }
+          };
+          chatProxy.client.historyMessage = function (result) {
+            result = typeof result === 'string' ? JSON.parse(result) : result;
+            if(result.total === 0) {
+              $('.history').empty();
+            }
+            else {
+              loadMessageHistory(result);
+            }
+          };
+          chatProxy.client.receivedMsg = function (result) {
+            result = typeof result === 'string' ? JSON.parse(result) : result;
+            var historyPanel = $('.history');
+            var length = historyPanel.children().length;
+            if (ckMuseumCode && ckMuseumCode === result.id.toString()) {
+              var element = createMesElement(false, length, result.mess);
+              element && historyPanel.append(element);
+              setScrollBottom();
+              chatProxy.server.setChatReadedKf(loginUserCode, ckMuseumCode);
+            }
+          };
+
+          chatProxy.client.outLine = function outLine(){
+            alert('连接已断开，请重新刷新创建链接！');
+          }
+        }
+
+        //设置科技馆未读消息
+        function setMessage(data) {
+          //$('.left').find('li[data-code="1"]').find('span').text(12);
+          //$('.left').find('li[data-code="1"]').find('div').css({'display':'none'});
+          var lsMessage = data.row || [];
+          for (var i = 0, length = lsMessage.length; i < length; i++) {
+            var item = lsMessage[i];
+            var liElement = $('.left').find('li[data-code="' + item.ID + '"]');
+            liElement.find('div').css({'display': 'block'});
+            liElement.find('span').text(item.NoReadNum);
+          }
+          //var lsLiElement = $('.left').find('li[data-code="' + 1 + '"]').find('span').innerText('');
+
+        }
+
+        //加载聊天记录
+        function loadMessageHistory(data) {
+          var historyPanel = $('.history');
+          historyPanel.empty();//清除子元素
+          var lsMessage = data.row || [];
+          for (var i = 0, length = lsMessage.length; i < length; i++) {
+            var hasSelf = false;
+            var mes = '';
+            var item = lsMessage[i];
+            item.From === 5 ? hasSelf = true : hasSelf = false;
+            //var element = $('<div class="' + (hasSelf ? 'panel_right' : '') + '" style="' + (i !== 0 ? 'clear:both;' : '') + '"><div class="arrow_box ' + (hasSelf ? 'arrow_right_box' : 'arrow_left_box') + '">Hello World!</div><div class="' + (hasSelf ? 'icon_right' : 'icon_left') + '"></div></div>')
+            var element = createMesElement(hasSelf, i, item.Msg);
+            element && historyPanel.append(element);
+          }
+          setScrollBottom();
+        }
+
+        //设置滚动条在最下
+        function setScrollBottom() {
+          var messagePanel = $('.history');
+          messagePanel.scrollTop(messagePanel[0].scrollHeight);
+        }
+
+        //添加发送消息
+        function addMessage(mes) {
+          sendMessage(mes);
+          var historyPanel = $('.history');
+          var length = historyPanel.children().length;
+          var element = createMesElement(true, length, mes);
+          element && historyPanel.append(element);
+          setScrollBottom();
+        }
+
+        //创建聊天元素
+        function createMesElement(hasSelf, hasFirst, mes) {
+          return $('<div class="' + (hasSelf ? 'panel_right' : '') + '" style="' + (hasFirst ? 'clear:both;' : '') + '"><div class="arrow_box ' + (hasSelf ? 'arrow_right_box' : 'arrow_left_box') + '">' + mes.replace(/\n/g,'<br />') + '</div><div class="' + (hasSelf ? 'icon_right' : 'icon_left') + '"></div></div>')
+        }
+
+        //发送聊天数据
+        function sendMessage(mes) {
+          if (ckMuseumCode) {
+            chatProxy.server.sendMessageKf(loginUserCode, mes, ckMuseumCode);//发送消息
+          }
+          //chatProxy.server.sendMessage(5, mes, 1);//发送消息
+        }
+
+        //元素注册事件
+        function addEvent() {
+          //头部tab切换样式
+          $('header li').on('click', function () {
+            $('header li').css('background', '#333333');
+            $(this).css('background', '#1f1f1f');
+            var className = $(this).attr('class');
+            if (className === 'yonghu') {
+              window.location.href = 'online-srevice.html';
+            } else if (className === 'guanli') {
+              window.location.href = 'part-manage.html';
+            } else if (className === 'ziyuan') {
+              window.location.href = 'resource-look.html';
+            } else if (className === 'tongji') {
+              window.location.href = 'count-analyse.html';
+            }
+          });
+
+          //聊天左侧点击变色
+          $('#taking .left').find('li').on('click', function () {
+            $('#taking .left').find('li').css('background', 'white');
+            $(this).css('background', '#e5e5e5');
+          });
+
+          //发送消息和换行快捷键提示
+          $('#taking .btn').find('b').hover(function () {
+            $('#taking .btn').find('b').find('.news').show();
+          }, function () {
+            $('#taking .btn').find('b').find('.news').hide();
+          });
+
+          $('#taking .btn').on('click', function (e) {
+            var messagePanel = $('#new-message');
+            if (messagePanel.val() !== '') {
+              addMessage(messagePanel.val());
+              messagePanel.val('');
+            }
+            else {
+              alert('发送内容不能为空！');
+            }
+          });
+
+          //聊天列表注册事件
+          $('.left').find('li').on('click', function (e) {
+            $(e.currentTarget).find('div').css({'display': 'none'});
+            ckMuseumCode = e.currentTarget.getAttribute('data-code') || undefined;
+            if (ckMuseumCode) {
+              chatProxy.server.getHistoryChatMuseum(loginUserCode, ckMuseumCode);
+            }
+          });
+        }
+
+        function loadHistoryOne(){
+          var liElements = $('.left li');
+          if(liElements && liElements.length){
+            var liElement = liElements[0];
+            liElement.style.background = 'rgb(229,229,229)';
+            $(liElement).find('div').css({'display': 'none'});
+            ckMuseumCode = liElement.getAttribute('data-code') || undefined;
+            if (ckMuseumCode) {
+              chatProxy.server.getHistoryChatMuseum(loginUserCode, ckMuseumCode);
+            }
+          }
+        }
+
+        //清除列表信息
+        function clearElement() {
+          $('.left').find('ul').remove();
+        }
+      }
     }
 </script>
 

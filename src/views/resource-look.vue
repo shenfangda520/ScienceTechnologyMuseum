@@ -1,21 +1,241 @@
 <template>
-    <div class="resource">
-        <!--资源浏览页面-->
-        <v-header></v-header>
+  <div class="resource">
+    <!--资源浏览页面-->
+    <v-header></v-header>
 
-        <v-paneldata></v-paneldata>
+    <div id="accredit">
+      <div class="one">
+        <div class="top">
+          <div class="left">
+            HTC-VR资源
+          </div>
+          <!--<div class="right">
+              <span>确认授权</span>
+          </div>-->
+          <div class="clear"></div>
+        </div>
+        <div class="picture">
+          <!-- Swiper -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界1</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界2</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界3</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界4</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界5</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界6</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界7</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界8</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界9</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界10</label>
+                </p>
+              </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="top">
+          <div class="left">
+            Oculus-VR资源
+          </div>
+          <!--<div class="right">
+              <span>确认授权</span>
+          </div>-->
+          <div class="clear"></div>
+        </div>
+        <div class="picture">
+          <!-- Swiper -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界1</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界2</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界3</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界4</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界5</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界6</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界7</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界8</label>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <labe>蒸汽世界9</labe>
+                </p>
+              </div>
+              <div class="swiper-slide">
+                <div class="img">
+
+                </div>
+                <p>
+                  <label>蒸汽世界10</label>
+                </p>
+              </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="information">
+        <div class="top">
+          <h2>恐龙大灭绝</h2>
+          <!--<h4>发行于：2017年5月20日</h4>-->
+        </div>
+        <div class="mid">
+
+        </div>
+        <div class="bottom">
+          恐龙（英文名：Dinosaur）[1]
+          ，是出现在中生代时期（三叠纪，侏罗纪和白垩纪）的一类爬行动物的统称，矫健的四肢、长长的尾巴和庞大的身躯是大多数恐龙的写照。它们主要栖息于湖岸平原（或海岸平原）上的森林地或开阔地带。
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'resource',
-        data () {
-            return {
-
-            }
-        }
+  export default {
+    name: 'resource',
+    data () {
+      return {}
     }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -192,7 +412,6 @@
     width: 100%;
     height: 100%;
   }
-
 
   #accredit {
     .one .picture .swiper-slide, .two .picture .swiper-slide {
