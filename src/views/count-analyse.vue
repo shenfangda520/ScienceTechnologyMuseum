@@ -2,12 +2,51 @@
     <div class="count-analyse">
         <!--统计分析页面-->
         <v-header :active="3" title="统计分析"></v-header>
+        <div id="content">
+          <!--上半部分-->
+          <div class="top">
+            <select title="" id="city-name" name="">
+              <option value="">选择地方科技馆</option>
+            </select>
+            <div class="sel">
+              <input type="text" id="start-time" name="" value="" placeholder="选择开始时间"/>
+              <input type="text" id="end-time" name="" value="" placeholder="选择截止日期"/>
+              <span class="s1">搜索</span>
+              <span class="s2"><a style="color:#333;">导出Excel</a></span><!--导出Excel  href="http://10.6.80.93:8066/api/VR/ExcelOutputs"-->
+            </div>
+          </div>
+          <!--下半部分-->
+          <div class="list">
+            <table id="vrHandle-info" border="" cellspacing="" cellpadding="">
 
+            </table>
+          </div>
 
+        </div>
+      <!--编辑部分-->
+      <div id="edit">
+        <div class="top">
+          编辑
+          <img src="img/close.png"/>
+        </div>
+        <div class="mid">
+          <p><span>编号</span><input title="" readonly type="text" name="" id="e-code" value=""/></p>
+          <p><span>日期</span><input title="" readonly type="text" name="" id="e-time" value=""/></p>
+          <p><span>科技馆名称</span><input title="" readonly type="text" name="" id="e-name" value=""/></p>
+          <p><span>资源名称</span><input title="" readonly type="text" name="" id="e-theme" value=""/></p>
+          <p><span>状态</span><input title="" type="text" name="" id="e-state" value=""/></p>
+          <p><span>操作次数</span><input onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" title="" type="text" name="" id="e-handle" value="666"/></p>
+          <p><b class="b1">确认</b></p>
+          <p><b class="b2">取消</b></p>
+        </div>
+      </div>
+      <!---->
     </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import api from '../api/index'
     export default {
         name: 'count-analyse',
         data () {
@@ -19,7 +58,87 @@
           if (!window.sessionStorage.getItem("userName")) {
             this.$router.push('/')
           }
-        }
+        },
+      mounted(){
+        //设置开始日期控件
+        $('#start-time').datetimepicker({
+          format: "yyyy-mm-dd",
+          autoclose: true,
+          minView: 'month'
+        });
+
+        //设置结束日期控件
+        $('#end-time').datetimepicker({
+          format: "yyyy-mm-dd",
+          autoclose: true,
+          minView: 'month'
+        });
+        this.getVRHandleInfo();
+        this.getMuseumNames();
+      },
+      methods:{
+          //请求数据
+        getVRHandleInfo(){
+          api.getVRHandleInfoList().then(res=>{
+            console.log(res)
+          })
+        },
+        getMuseumNames(){
+          api.getPubTotravelNum().then(res=>{
+            console.log(res)
+          })
+        },
+        //属性合并
+        getAttributes(data) {
+          var rtValue = '';
+          //var lsField = ['OperID', 'MuseumName', 'VrName', 'UploadStatus', 'OperNum'];
+          var lsField = ['OperID', 'OPERDATE','MuseumName', 'VrName', 'OperNum', 'UploadStatus'];
+          for (var i = 0, length = lsField.length; i < length; i++) {
+            var field = lsField[i];
+            if (rtValue === '') {
+              //rtValue = data[lsField[i]];
+              rtValue = field === 'OPERDATE' ?  data[lsField[i]].split('T')[0] : (data[lsField[i]] !== null ? data[lsField[i]] : '同步成功');
+            } else {
+              //rtValue += '|' + data[lsField[i]];
+              rtValue += '|' + (field === 'OPERDATE' ?  data[lsField[i]].split('T')[0] : (data[lsField[i]] !== null ? data[lsField[i]] : '同步成功'));
+            }
+          }
+          return rtValue;
+        },
+        //编辑提交事件
+        editHandleInfo() {
+          var code = $('#e-code').val();
+          var time = $('#e-time').val();
+          var name = $('#e-name').val();
+          var theme = $('#e-theme').val();
+          var staus = $('#e-state').val();
+          var handleCount = $('#e-handle').val();
+          var params = {
+            OperID: code,
+            OperNum: handleCount,
+            SYNCSTATUS: staus === '' ? '同步成功' : staus
+          };
+          VRHandle.editVRHandleCount(params, 'POST', function (result) {
+            var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+            var dataList = [];
+            if (status) {
+              VRHandle.getVRHandleInfoList({}, 'GET', loadMuseumHandleInfo);
+            }
+            else {
+              console.log('数据编辑失败!');
+            }
+          })
+        },
+        //点击搜索按钮和下拉列表选择事件
+        searchInfo(code, startTime, endTime) {
+          var params = {
+            MuseumCode: code || null,
+            StartDate: startTime || null,
+            EndDate: endTime || null
+          };
+          VRHandle.getVRHandleInfoList(params, 'GET', loadMuseumHandleInfo);
+        },
+      }
     }
 </script>
 

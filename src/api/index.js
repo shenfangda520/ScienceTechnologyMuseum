@@ -41,9 +41,14 @@ export default {
   /**
    * 获取科技馆信息列表
    */
-  getMuseumInfoList(params) {
+  getMuseumInfoList(pms,type) {
     return axios.get(getMuseumInfoListResource, {
-
+      regionName: pms.regionName || null,
+      museumCode: pms.museumCode || null,
+      museumName: pms.museumName || null,
+      runStatus: pms.runStatus || null,
+      pageIndex: pms.pageIndex || 0,
+      pageNum: pms.pageNum || 0
     })
   },
 
@@ -60,55 +65,56 @@ export default {
    * 删除科技馆
    */
   delMuseum(params) {
-    return fetch(delMuseumResource)
+    return  axios.get(delMuseumResource)
   },
 
   /**
    * 编辑科技馆
    */
   editMuseumInfo(params) {
-    return fetch(editMuseumInfoResource, {sportId: id})
+    return  axios.get(editMuseumInfoResource,params)
   },
 
   /**
    * 科技馆资源权限设置
    */
   setMuseumProxy(params) {
-    return fetch(setMuseumProxyResource, params)
+    return  axios.get(setMuseumProxyResource, params)
   },
 
   /**
    * 获取VR资源信息列表
    */
-  getVRInfoList(params) {
-    return fetch(getVRInfoListResource, params)
+  getVRInfoList(type) {
+    return axios.get(getVRInfoListResource,type
+    )
   },
 
   /**
    * 获取VR操作详细信息
    */
   getVRHandleInfoList(params) {
-    return fetch(getVRHandleInfoListResource, params)
+    return  axios.get(getVRHandleInfoListResource, params)
   },
 
   /**
    * 编辑VR操作次数
    */
   getPubTotravelNum(params) {
-    return fetch(getPubTotravelNumResource, params)
+    return  axios.get(getPubTotravelNumResource, params)
   },
 
   /**
    * 上传VR操作次数
    */
   uploadOperNumInfo(params) {
-    return fetch(uploadOperNumInfoResource, params)
+    return  axios.get(uploadOperNumInfoResource, params)
   },
 
   /**
    * VR操作次数文件下载接口
    */
   outputExcel(params) {
-    return fetch(outputExcelResource,params)
+    return  axios.get(outputExcelResource,params)
   }
 }

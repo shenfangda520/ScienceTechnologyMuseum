@@ -56,7 +56,7 @@
             }
             api.getLogin(data.userName,data.userPwd)
               .then(res=>{
-                  console.log(res)
+                  //console.log(res)
                 if(res.data.Status == 1){
                       //登录成功！
                       this.open3()
@@ -72,6 +72,7 @@
 
         },
       mounted(){
+
         var that = this;
         // 姓名验证
         $("#userName").blur(function () {
@@ -107,7 +108,8 @@
           } else if (!/^[A-Za-z0-9]+$/.test(pwd) || pwd.length < 4) {
             that.$notify({
               title: '警告',
-              message: '密码只能是4位以上英文或者数字',
+              message: '密码只能是4' +
+              '位以上英文或者数字',
               type: 'warning'
             });
           }
@@ -119,6 +121,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
   html, body {
     width: 100%;
     height: 100%;

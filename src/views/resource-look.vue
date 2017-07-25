@@ -17,7 +17,14 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-
+              <div  v-for="(data,index) in Listdata"  :data-code="data.VrCode" class="swiper-slide swiper-slide-active" style="width: 216px; margin-right: 30px;">
+                <div class="img">
+                  <img :src="data.ImgURL">
+                </div>
+                <p>
+                  <label>{{data.VrName}}</label>
+                </p>
+              </div>
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -42,7 +49,14 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-
+              <div  v-for="(data,index) in Listdatadw"  :data-code="data.VrCode" class="swiper-slide swiper-slide-active" style="width: 216px; margin-right: 30px;">
+                <div class="img">
+                  <img :src="data.ImgURL">
+                </div>
+                <p>
+                  <label>{{data.VrName}}</label>
+                </p>
+              </div>
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -72,14 +86,49 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import api from '../api/index'
+  import '../../static/swiper.min'
   export default {
     name: 'resource',
     data () {
-      return {}
+      return {
+        Listdata:[],
+        Listdatadw:[]
+      }
     },
     beforeCreate(){
       if (!window.sessionStorage.getItem("userName")) {
         this.$router.push('/')
+      }
+    },
+    mounted(){
+      var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 5,
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 30
+      })
+      //
+      this.getVRInfoList()
+    },
+    methods:{
+      getVRInfoList(){
+          console.log("请求数据中")
+        let lsVR = [{type: 'HTC', className: 'one'}, {type: 'Oculus', className: 'two'}];
+        api.getVRInfoList({VrType: lsVR[0].type || undefined}).then(res =>{
+          console.log(res)
+          this.Listdata = res.Data;
+
+        });
+        api.getVRInfoList({VrType: lsVR[1].type || undefined}).then(res =>{
+          //console.log(res)
+          this.Listdatadw = res.Data;
+
+        });
+
       }
     }
   }
@@ -87,6 +136,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  @import "../assets/css/swiper.min.css";
   html, body {
     width: 100%;
     height: 100%;

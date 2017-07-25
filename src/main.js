@@ -13,6 +13,7 @@ Vue.use(ElementUI)
 //
 //inconfont字体css
 import './assets/font/iconfont.css'
+
 //公共组件全局注册
 Vue.component('v-header', Header);
 Vue.config.productionTip = false;
