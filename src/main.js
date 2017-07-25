@@ -10,6 +10,7 @@ import Header from './components/Header'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI)
+//
 //inconfont字体css
 import './assets/font/iconfont.css'
 //公共组件全局注册

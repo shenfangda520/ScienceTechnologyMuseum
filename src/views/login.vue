@@ -7,26 +7,68 @@
         <div class="mid">
           <p class="password">
             <img src="../assets/img/username.png"/>
-            <input type="text" name="" id="userName" value="吴印照" placeholder="用户名"/>
+            <input type="text" name="" id="userName" auto-complete="off" v-model="ruleForm.name" placeholder="用户名"/>
           </p>
           <p class="username">
             <img src="../assets/img/password.png"/>
-            <input type="password" name="" id="pwd" value="123" placeholder="密码"/>
+            <input type="password" name="" id="pwd"  placeholder="密码" auto-complete="off" v-model="ruleForm.password" />
           </p>
-          <p id="btnLogin">登录</p>
+          <p id="btnLogin" @click="handleSubmit">登录</p>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import api from '../api/index'
     export default {
         name: 'login',
-        data () {
-            return {
+      data () {
+        // 姓名验证
+        let validatorName = function (value) {
+          if (!value) {
+            this.$notify({
+              title: '警告',
+              message: '请输入账号',
+              type: 'warning'
+            });
 
-            }
-        },
+          } else if (!/^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/.test(value) || value.length < 6) {
+            this.$notify({
+              title: '警告',
+              message: '账号只能是6位以上中英文或者数字',
+              type: 'warning'
+            });
+          }
+        }
+        // 密码验证
+
+        let validatorPass = (value) => {
+          if (!value) {
+            this.$notify({
+              title: '警告',
+              message: '请输入密码',
+              type: 'warning'
+            });
+
+          } else if (!/^[A-Za-z0-9]+$/.test(value) || value.length < 6) {
+            this.$notify({
+              title: '警告',
+              message: '密码只能是6位以上英文或者数字',
+              type: 'warning'
+            });
+          }
+        }
+        return {
+          // 表单数据
+          ruleForm: {
+            name: '',
+            password: ''
+          },
+
+        }
+      },
         methods:{
           open3() {
             this.$notify({
@@ -47,9 +89,22 @@
               title: '错误',
               message: '这是一条错误的提示消息'
             });
+          },
+          // 表单提交
+          handleSubmit () {
+            let data = {
+              userName: this.ruleForm.name,
+              userPwd: this.ruleForm.password
+            }
+            api.getLogin(data.userName,data.userPwd)
+              .then(res=>{
+                  console.log(res)
+              })
           }
+
         },
       mounted(){
+
 
       }
     }
