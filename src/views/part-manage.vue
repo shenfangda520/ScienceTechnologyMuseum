@@ -1,9 +1,9 @@
 <template>
     <div class="part-manage">
         <!--地方科技馆管理页面-->
-        <v-header></v-header>
+        <v-header  :active="1" title="地方科技馆管理"></v-header>
 
-        <v-paneldata></v-paneldata>
+
     </div>
 </template>
 
@@ -14,7 +14,12 @@
             return {
 
             }
+        },
+      beforeCreate(){
+        if (!window.sessionStorage.getItem("userName")) {
+          this.$router.push('/')
         }
+      }
     }
 </script>
 

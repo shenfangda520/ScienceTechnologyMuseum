@@ -1,7 +1,7 @@
 <template>
     <div class="count-analyse">
         <!--统计分析页面-->
-        <v-header></v-header>
+        <v-header :active="3" title="统计分析"></v-header>
 
 
     </div>
@@ -14,6 +14,11 @@
             return {
 
             }
+        },
+        beforeCreate(){
+          if (!window.sessionStorage.getItem("userName")) {
+            this.$router.push('/')
+          }
         }
     }
 </script>
@@ -83,7 +88,6 @@
       }
     }
   }
-
   #content {
     width: 1200px;
     margin: 0 auto;

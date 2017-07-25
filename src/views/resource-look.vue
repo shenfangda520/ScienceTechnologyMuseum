@@ -1,8 +1,7 @@
 <template>
   <div class="resource">
     <!--资源浏览页面-->
-    <v-header></v-header>
-
+    <v-header :active="2" title="资源浏览"></v-header>
     <div id="accredit">
       <div class="one">
         <div class="top">
@@ -18,86 +17,7 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="img">
 
-                </div>
-                <p>
-                  <label>蒸汽世界1</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界2</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界3</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界4</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界5</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界6</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界7</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界8</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界9</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界10</label>
-                </p>
-              </div>
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -122,86 +42,7 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="img">
 
-                </div>
-                <p>
-                  <label>蒸汽世界1</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界2</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界3</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界4</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界5</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界6</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界7</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界8</label>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <labe>蒸汽世界9</labe>
-                </p>
-              </div>
-              <div class="swiper-slide">
-                <div class="img">
-
-                </div>
-                <p>
-                  <label>蒸汽世界10</label>
-                </p>
-              </div>
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -213,6 +54,7 @@
       </div>
 
       <div id="information">
+        <span class="sanjiao"></span>
         <div class="top">
           <h2>恐龙大灭绝</h2>
           <!--<h4>发行于：2017年5月20日</h4>-->
@@ -234,6 +76,11 @@
     name: 'resource',
     data () {
       return {}
+    },
+    beforeCreate(){
+      if (!window.sessionStorage.getItem("userName")) {
+        this.$router.push('/')
+      }
     }
   }
 </script>

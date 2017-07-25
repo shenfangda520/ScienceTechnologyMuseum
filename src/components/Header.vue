@@ -5,31 +5,31 @@
         <a style="color: white;text-decoration: none;" href="#/Statistical">返回</a>
       </div>
       <div class="right">
-        资源浏览
+        {{title}}
       </div>
     </div>
     <div class="clear"></div>
     <div class="bottom">
       <ul>
-        <li class="yonghu">
+        <li class="yonghu" :class="{active:active==0}">
           <a class="item-link" href="#/OnlineSrevice">
             <img src="../assets/img/yonghu.png">
             在线客服
           </a>
         </li>
-        <li class="guanli">
+        <li class="guanli" :class="{active:active==1}">
           <a class="item-link" href="#/PartManage">
             <img src="../assets/img/guanli.png">
             地方科技馆管理
           </a>
         </li>
-        <li class="ziyuan">
+        <li class="ziyuan" :class="{active:active==2}">
           <a class="item-link" href="#/ResourceLook">
             <img src="../assets/img/ziyuan.png">
             资源浏览
           </a>
         </li>
-        <li class="tongji">
+        <li class="tongji" :class="{active:active==3}">
           <a class="item-link" href="#/CountAnalyse">
             <img src="../assets/img/tongji.png">
             统计分析
@@ -46,6 +46,16 @@
     data () {
       return {
         msg: 'App'
+      }
+    },
+    props:{
+      active: {
+        type: Number,
+        default: 0
+      },
+      title: {
+        type: String,
+        default: ''
       }
     },
     mounted(){
@@ -120,9 +130,7 @@
             top: 4px;
             left: -5px;
           }
-          &:nth-child(2) {
-            background: #1f1f1f;
-          }
+
           &:last-child {
             border-right: 1px solid #4d4d4d;
           }
@@ -130,5 +138,7 @@
       }
     }
   }
-
+  .active {
+    background: #1f1f1f;
+  }
 </style>

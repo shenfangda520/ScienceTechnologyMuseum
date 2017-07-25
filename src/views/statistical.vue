@@ -48,7 +48,12 @@
             return {
 
             }
+        },
+      beforeCreate(){
+        if (!window.sessionStorage.getItem("userName")) {
+          this.$router.push('/')
         }
+      }
     }
 </script>
 

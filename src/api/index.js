@@ -23,11 +23,10 @@ export default {
    */
   getLogin(Name,Pwd) {
     return axios.post(LoginResource,{
-      params:{
         userName: Name||'',
         userPwd: Pwd||''
       }
-    })
+    )
   },
 
   /**

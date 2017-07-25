@@ -1,7 +1,7 @@
 <template>
     <div class="onine">
         <!--在线客服页面-->
-        <v-header></v-header>
+        <v-header :active="0" title="在线客服"></v-header>
 
       <div id="taking">
         <div class="left">
@@ -75,6 +75,11 @@
 
             }
         },
+      beforeCreate(){
+        if (!window.sessionStorage.getItem("userName")) {
+          this.$router.push('/')
+        }
+      },
       mounted(){
         //VRHandle.url = 'data/city-name.json';
         var ckMuseumCode = undefined;
