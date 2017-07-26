@@ -111,6 +111,8 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
+  import api from '../api/index'
   export default {
     name: 'part-manage',
     data () {
@@ -122,11 +124,34 @@
       }
     },
     mounted(){
-
+      //授权页面轮播图
+      var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 5,
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 30
+      });
+      this.getMuseumInfo();
     },
     methods: {
       //获取初始数据
-
+      getMuseumInfo(){
+        var lsVR = [{type: 'HTC', className: 'one'}, {type: 'Oculus', className: 'two'}];
+        //加载信息列表
+        api.getMuseumInfoList({}).then(res=>{
+          this.loadData(res);
+        }).catch(err=>console.log(err));
+        //获取初始化数据001
+        api.getVRInfoList({VrType: lsVR[0].type || undefined}).then(res=>{
+          console.log(res)
+        }).catch(err=>console.log(err));
+        //获取初始化数据002
+        api.getVRInfoList({VrType: lsVR[1].type || undefined}).then(res=>{
+          console.log(res)
+        }).catch(err=>console.log(err));
+      },
       //合并属性
       getMuseumAttributes(data) {
         var rtValue = '';
@@ -189,15 +214,23 @@
         var params = {
           MuseumCode: code
         };
-        VRHandle.delMuseum(params, 'POST', function (result) {
-          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
-          if (status) {
+        api.delMuseum(params).then(res=>{
+          var status = typeof res.Status === 'string' ? parseInt(res.Status) : res.Status;
+          if(status){
             //加载信息列表
-            VRHandle.getMuseumInfoList({}, 'GET', loadData);
-          } else {
-            alert('科技馆信息删除失败!');
+            api.getMuseumInfoList({}).then(res=>{
+              this.loadData(res);
+            });
+          }else{
+            this.$notify({
+              title: '警告',
+              message: '删除数据失败！',
+              type: 'warning'
+            });
           }
         })
+
+
       },
       //设置编辑信息
       setEditData(data) {
@@ -221,15 +254,21 @@
           RegionName: itemRegion || null,
           RunStatus: '正常'
         };
-        VRHandle.editMuseumInfo(params, 'POST', function (result) {
-          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
-          if (status) {
+        api.editMuseumInfo(params).then(res=>{
+          var status = typeof res.Status === 'string' ? parseInt(res.Status) : res.Status;
+          if(status){
             //加载信息列表
-            VRHandle.getMuseumInfoList({}, 'GET', loadData);
-          } else {
-            alert('科技馆信息编辑失败!');
+            api.getMuseumInfoList({}).then(res=>{
+              this.loadData(res);
+            });
+          }else{
+            this.$notify({
+              title: '警告',
+              message: '编辑信息失败！',
+              type: 'warning'
+            });
           }
-        });
+        })
       },
       //添加信息
       addData() {
@@ -243,16 +282,21 @@
           RegionName: itemRegion || null,
           RunStatus: '正常'
         };
-        VRHandle.addMuseum(params, 'POST', function (result) {
-          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
-          if (status) {
+        api.addMuseum(params).then(res=>{
+          var status = typeof res.Status === 'string' ? parseInt(res.Status) : res.Status;
+          if(status){
             //加载信息列表
-            VRHandle.getMuseumInfoList({}, 'GET', loadData);
-            $('#add').hide();
-          } else {
-            alert('添加科技馆失败!');
+            api.getMuseumInfoList({}).then(res=>{
+              this.loadData(res);
+            });
+          }else{
+            this.$notify({
+              title: '警告',
+              message: '添加信息失败！',
+              type: 'warning'
+            });
           }
-        });
+        })
       },
       //设置科技馆VR资源权限
       setVRProxy(museumCode) {
@@ -261,16 +305,21 @@
           MuseumCode: museumCode,
           VrCodeList: lsCodes.join(',')
         };
-        VRHandle.setMuseumProxy(params, 'POST', function (result) {
-          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
-          if (status) {
-            VRHandle.getMuseumInfoList({}, 'GET', loadData);
-            //关闭授权窗口 2017.07.23
-            $('#accredit').hide();
-          } else {
-            alert('VR资源权限设置失败!');
+        api.setMuseumProxy(params).then(res=>{
+          var status = typeof res.Status === 'string' ? parseInt(res.Status) : res.Status;
+          if(status){
+            //加载信息列表
+            api.getMuseumInfoList({}).then(res=>{
+              this.loadData(res);
+            });
+          }else{
+            this.$notify({
+              title: '警告',
+              message: '设置权限失败！',
+              type: 'warning'
+            });
           }
-        });
+        })
       },
       //设置默认VR资源
       setVRElementChecked(data) {
@@ -290,7 +339,7 @@
       //加载科技馆信息列表
       loadData(res) {
         var that = this;
-        var dataList = [];
+        var dataList = res.data.Data.itemList;
 
         $('#museums-info').bootstrapTable('destroy').bootstrapTable({
           columns: [
@@ -313,7 +362,7 @@
               title: 'VR资源',
               align: 'center',
               formatter: function (value, row, index) {
-                return convertData(dataList[index].vrList).vrNames;
+                return that.convertData(dataList[index].vrList).vrNames;
               }
             }, {
               field: 'RegionName',
@@ -351,7 +400,27 @@
           onClickRow: function (e) {
           }
         });
+      },
+      updateEvent() {
+        $('#content .list').find('table').find('.img1').on('click', function (e) {
+          var attr = e.currentTarget.getAttribute('data-attrs');
+          setEditData(attr);
+          $('#edit').show();
+        });
+        $('#content .list').find('table').find('.img2').on('click', function (e) {
+          $('#accredit').show();
+          museumCode = e.currentTarget.getAttribute('data-code') || undefined;
+
+          //设置已有VR资源
+          var lsCodes = e.currentTarget.getAttribute('data-vr-code') || '';
+          setVRElementChecked(lsCodes);
+        });
+        $('#content .list').find('table').find('.img3').on('click', function (e) {
+          museumCode = e.currentTarget.getAttribute('data-code');
+          $('#delete').show();
+        });
       }
+
 
 
     }

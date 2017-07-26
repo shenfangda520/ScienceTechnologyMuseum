@@ -50,7 +50,8 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div v-for="(data,index) in Listdatadw" :data-code="data.VrCode" class="swiper-slide swiper-slide-active"
+              <div v-for="(data,index) in Listdatadw" :data-code="data.VrCode"
+                   class="swiper-slide swiper-slide-active"
                    style="width: 216px; margin-right: 30px;">
                 <div class="img">
                   <img :src="data.ImgURL">

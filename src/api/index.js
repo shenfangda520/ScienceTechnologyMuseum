@@ -33,9 +33,7 @@ export default {
    * 获取科技馆名称列表接口
    */
   getMuseumNamesList(params) {
-    return axios.get(getMuseumNamesListResource, {
-
-    })
+    return axios.get(getMuseumNamesListResource,params)
   },
 
   /**
@@ -56,8 +54,11 @@ export default {
    * 添加科技馆
    */
   addMuseum(params) {
-    return axios.get(addMuseumResource,{
-
+    return axios.post(addMuseumResource,{
+      MuseumCode: params.MuseumCode || null,
+      MuseumName: params.MuseumName || null,
+      RegionName: params.RegionName || null,
+      RunStatus: params.RunStatus || null
     })
   },
 
@@ -65,29 +66,30 @@ export default {
    * 删除科技馆
    */
   delMuseum(params) {
-    return  axios.get(delMuseumResource)
+    return  axios.post(delMuseumResource,{
+      '': pms.MuseumCode || null
+    })
   },
 
   /**
    * 编辑科技馆
    */
   editMuseumInfo(params) {
-    return  axios.get(editMuseumInfoResource,params)
+    return  axios.post(editMuseumInfoResource,params)
   },
 
   /**
    * 科技馆资源权限设置
    */
   setMuseumProxy(params) {
-    return  axios.get(setMuseumProxyResource, params)
+    return  axios.post(setMuseumProxyResource, params)
   },
 
   /**
    * 获取VR资源信息列表
    */
   getVRInfoList(type) {
-    return axios.get(getVRInfoListResource,type
-    )
+    return axios.get(getVRInfoListResource,type)
   },
 
   /**
