@@ -17,7 +17,8 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div  v-for="(data,index) in Listdata"  :data-code="data.VrCode" class="swiper-slide swiper-slide-active" style="width: 216px; margin-right: 30px;">
+              <div v-for="(data,index) in Listdata" :data-code="data.VrCode" class="swiper-slide swiper-slide-active"
+                   style="width: 216px; margin-right: 30px;">
                 <div class="img">
                   <img :src="data.ImgURL">
                 </div>
@@ -49,7 +50,8 @@
           <!-- Swiper -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div  v-for="(data,index) in Listdatadw"  :data-code="data.VrCode" class="swiper-slide swiper-slide-active" style="width: 216px; margin-right: 30px;">
+              <div v-for="(data,index) in Listdatadw" :data-code="data.VrCode" class="swiper-slide swiper-slide-active"
+                   style="width: 216px; margin-right: 30px;">
                 <div class="img">
                   <img :src="data.ImgURL">
                 </div>
@@ -86,15 +88,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import {mapActions} from 'vuex'
   import api from '../api/index'
-  import '../../static/swiper.min'
+  import '../../static/js/swiper.min'
   export default {
     name: 'resource',
     data () {
       return {
-        Listdata:[],
-        Listdatadw:[]
+        Listdata: [],
+        Listdatadw: []
       }
     },
     beforeCreate(){
@@ -114,19 +116,23 @@
       //
       this.getVRInfoList()
     },
-    methods:{
+    methods: {
       getVRInfoList(){
-          console.log("请求数据中")
+        console.log("请求数据中")
         let lsVR = [{type: 'HTC', className: 'one'}, {type: 'Oculus', className: 'two'}];
-        api.getVRInfoList({VrType: lsVR[0].type || undefined}).then(res =>{
+        api.getVRInfoList({VrType: lsVR[0].type || undefined}).then(res => {
           console.log(res)
           this.Listdata = res.Data;
 
+        }).catch(err =>{
+          console.log(err);
         });
-        api.getVRInfoList({VrType: lsVR[1].type || undefined}).then(res =>{
+        api.getVRInfoList({VrType: lsVR[1].type || undefined}).then(res => {
           //console.log(res)
           this.Listdatadw = res.Data;
 
+        }).catch(err =>{
+          console.log(err);
         });
 
       }
@@ -136,7 +142,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "../assets/css/swiper.min.css";
+  @import "../../static/css/swiper.min.css";
+
   html, body {
     width: 100%;
     height: 100%;

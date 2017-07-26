@@ -1,26 +1,361 @@
 <template>
-    <div class="part-manage">
-        <!--地方科技馆管理页面-->
-        <v-header  :active="1" title="地方科技馆管理"></v-header>
-
-
+  <div class="part-manage">
+    <!--地方科技馆管理页面-->
+    <v-header :active="1" title="地方科技馆管理"></v-header>
+    <div id="content">
+      <div class="top">
+        <div class="sel">
+          <span class="s2">添加科技馆</span>
+        </div>
+      </div>
+      <div class="list">
+        <table id="museums-info" border="" cellspacing="" cellpadding="">
+          <!--动态生成-->
+        </table>
+      </div>
     </div>
+    <!--编辑-->
+    <div id="edit">
+      <div class="top">
+        <span>编辑</span>
+        <img src="../assets/img/close.png"/>
+      </div>
+      <div class="mid">
+        <p><span>编码</span><input readonly title="" type="text" name="" id="e-code" value=""/></p>
+        <p><span>科技馆名称</span><input title="" type="text" name="" id="e-museum" value=""/></p>
+        <p><span>行政划分</span><input title="" type="text" name="" id="e-region" value=""/></p>
+        <p><b class="b1">确认</b></p>
+        <p><b class="b2">取消</b></p>
+      </div>
+    </div>
+    <!--新增-->
+    <div id="add">
+      <div class="top">
+        <span>添加科技馆</span>
+        <img src="../assets/img/close.png"/>
+      </div>
+      <div class="mid">
+        <p><span>编码</span><input title="" type="text" name="" id="a-code" value=""/></p>
+        <p><span>科技馆名称</span><input title="" type="text" name="" id="a-museum" value=""/></p>
+        <p><span>行政划分</span><input title="" type="text" name="" id="a-region" value=""/></p>
+        <p><b class="b1">确认</b></p>
+        <p><b class="b2">取消</b></p>
+      </div>
+    </div>
+    <!--删除-->
+    <div id="delete">
+      <div class="top">
+        <img src="../assets/img/delete-yes.png"/> 您确认将该条信息删除吗？
+      </div>
+      <div class="bottom">
+        <span class="s1">确认</span><span class="s2">取消</span>
+      </div>
+    </div>
+    <!--授权-->
+    <div id="accredit">
+      <div class="head">
+        科技馆授权访问资源
+        <img src="../assets/img/close.png"/>
+      </div>
+      <div class="one">
+        <div class="top">
+          <div class="left">
+            HTC-VR资源
+          </div>
+          <div class="right">
+            <span>确认授权</span>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="picture">
+          <!-- Swiper -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <!--动态生成-->
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+      </div>
+      <div class="two">
+        <div class="top">
+          <div class="left">
+            Oculus-VR资源
+          </div>
+          <div class="right">
+            <span>确认授权</span>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="picture">
+          <!-- Swiper -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <!--动态生成-->
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'part-manage',
-        data () {
-            return {
-
-            }
-        },
-      beforeCreate(){
-        if (!window.sessionStorage.getItem("userName")) {
-          this.$router.push('/')
-        }
+  export default {
+    name: 'part-manage',
+    data () {
+      return {}
+    },
+    beforeCreate(){
+      if (!window.sessionStorage.getItem("userName")) {
+        this.$router.push('/')
       }
+    },
+    mounted(){
+
+    },
+    methods: {
+      //获取初始数据
+
+      //合并属性
+      getMuseumAttributes(data) {
+        var rtValue = '';
+        for (var item in data) {
+          if (typeof data[item] === 'object') {
+            continue;
+          }
+          if (rtValue === '') {
+            rtValue = data[item];
+          } else {
+            rtValue += '|' + data[item];
+          }
+        }
+        return rtValue;
+      },
+      //数据转换
+      convertData(data) {
+        var lsNames = '';
+        var lsCodes = '';
+        for (var item in data) {
+          if (lsNames === '')
+            lsNames = data[item].VrName;
+          else
+            lsNames += ',' + data[item].VrName;
+
+          if (lsCodes === '')
+            lsCodes = data[item].VrCode;
+          else
+            lsCodes += '|' + data[item].VrCode;
+        }
+        return {vrNames: lsNames, vrCodes: lsCodes};
+      },
+      //获取选中VR资源个数
+      getVRCount() {
+        var lsChecks = $('#accredit').find('input[type="checkbox"]');
+        var count = 0;
+        for (var i = 0, length = lsChecks.length; i < length; i++) {
+          var item = lsChecks[i];
+          if (item.checked) {
+            count++;
+          }
+        }
+        return count;
+      },
+      //获取所有选中VR元素标识
+      getCheckedVRCode() {
+        var codes = [];
+        var lsElement = $('input[type="checkbox"]');
+        for (var index in lsElement) {
+          var el = lsElement[index];
+          if (!el.checked) {
+            continue;
+          }
+          codes.push(el.getAttribute('data-code'));
+        }
+        return codes;
+      },
+      //删除数据
+      delData(code) {
+        var params = {
+          MuseumCode: code
+        };
+        VRHandle.delMuseum(params, 'POST', function (result) {
+          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+          if (status) {
+            //加载信息列表
+            VRHandle.getMuseumInfoList({}, 'GET', loadData);
+          } else {
+            alert('科技馆信息删除失败!');
+          }
+        })
+      },
+      //设置编辑信息
+      setEditData(data) {
+        //所属政区|编码|名称|状态
+        var lsAttr = data && data.split('|');
+        $('#e-order').val(lsAttr[1]);
+        $('#e-code').val(lsAttr[1]);
+        $('#e-museum').val(lsAttr[2]);
+        $('#e-region').val(lsAttr[0]);
+      },
+
+      //编辑信息
+      editData() {
+        var itemOrder = $('#e-order').val();
+        var itemCode = $('#e-code').val();
+        var itemName = $('#e-museum').val();
+        var itemRegion = $('#e-region').val();
+        var params = {
+          MuseumCode: itemCode || null,
+          MuseumName: itemName || null,
+          RegionName: itemRegion || null,
+          RunStatus: '正常'
+        };
+        VRHandle.editMuseumInfo(params, 'POST', function (result) {
+          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+          if (status) {
+            //加载信息列表
+            VRHandle.getMuseumInfoList({}, 'GET', loadData);
+          } else {
+            alert('科技馆信息编辑失败!');
+          }
+        });
+      },
+      //添加信息
+      addData() {
+        var itemOrder = $('#a-order').val();
+        var itemCode = $('#a-code').val();
+        var itemName = $('#a-museum').val();
+        var itemRegion = $('#a-region').val();
+        var params = {
+          MuseumCode: itemCode || null,
+          MuseumName: itemName || null,
+          RegionName: itemRegion || null,
+          RunStatus: '正常'
+        };
+        VRHandle.addMuseum(params, 'POST', function (result) {
+          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+          if (status) {
+            //加载信息列表
+            VRHandle.getMuseumInfoList({}, 'GET', loadData);
+            $('#add').hide();
+          } else {
+            alert('添加科技馆失败!');
+          }
+        });
+      },
+      //设置科技馆VR资源权限
+      setVRProxy(museumCode) {
+        var lsCodes = getCheckedVRCode() || [];
+        var params = {
+          MuseumCode: museumCode,
+          VrCodeList: lsCodes.join(',')
+        };
+        VRHandle.setMuseumProxy(params, 'POST', function (result) {
+          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
+          if (status) {
+            VRHandle.getMuseumInfoList({}, 'GET', loadData);
+            //关闭授权窗口 2017.07.23
+            $('#accredit').hide();
+          } else {
+            alert('VR资源权限设置失败!');
+          }
+        });
+      },
+      //设置默认VR资源
+      setVRElementChecked(data) {
+        $('input[type="checkbox"]').attr('checked', false);
+        var lsCode = data && data.split('|');
+        for (var i = 0, length = lsCode.length; i < length; i++) {
+          var code = lsCode[i];
+          var ckElement = $('input[type="checkbox"][data-code="' + code + '"]');
+          if (ckElement) {
+            //ckElement.attr('checked', true);
+            for (var j = 0, sum = ckElement.length; j < sum; j++) {
+              ckElement[j].checked = true;
+            }
+          }
+        }
+      },
+      //加载科技馆信息列表
+      loadData(res) {
+        var that = this;
+        var dataList = [];
+
+        $('#museums-info').bootstrapTable('destroy').bootstrapTable({
+          columns: [
+            {
+              field: 'Number',
+              title: '序号',
+              formatter: function (value, row, index) {
+                return index + 1;
+              },
+              align: 'center'
+            }, {
+              field: 'MuseumCode',
+              title: '编码',
+              align: 'center'
+            }, {
+              field: 'MuseumName',
+              title: '科技馆名称',
+              align: 'center'
+            }, {
+              title: 'VR资源',
+              align: 'center',
+              formatter: function (value, row, index) {
+                return convertData(dataList[index].vrList).vrNames;
+              }
+            }, {
+              field: 'RegionName',
+              title: '所属行政区划',
+              align: 'center'
+            }, {
+              field: 'RunStatus',
+              title: '运行状态',
+              align: 'center'
+            }, {
+              field: '操作',
+              title: '操作',
+              formatter: function (value, row, index) {
+                setTimeout(function () {
+                  that.updateEvent();
+                }, 10);
+                var rowCode = row.MuseumCode;
+                var attrs = that.getMuseumAttributes(row);
+                return ['<img data-attrs="' + attrs + '" data-code="' + rowCode + '" title="编辑" class="img1" src="../assets/img/bianji.png"/>',
+                  '<img data-vr-code="' + that.convertData(row.vrList).vrCodes + '" data-code="' + rowCode + '" title="授权" class="img2" src="../assets/img/shouquan.png"/>',
+                  '<img data-code="' + rowCode + '" title="删除" class="img3" src="../assets/img/delte.png"/>'].join(' ');
+              },
+              align: 'center',
+              width: 240
+            }],
+          data: dataList,
+          striped: true,  //表格显示条纹
+          pagination: true, //启动分页
+          pageSize: 10,  //每页显示的记录数
+          pageNumber: 1, //当前第几页
+          pageList: [],  //记录数可选列表
+          search: false,  //是否启用查询
+          showColumns: false,  //显示下拉框勾选要显示的列
+          showRefresh: false,  //显示刷新按钮
+          onClickRow: function (e) {
+          }
+        });
+      }
+
+
     }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -33,7 +368,7 @@
   .part-manage {
     width: 100%;
     height: 120px;
-    color: white;
+    color: #000;
     .top {
       width: 100%;
       height: 80px;
