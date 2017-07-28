@@ -26,8 +26,8 @@
 
     </div>
     <!--编辑部分-->
-    <div id="edit">
-      <div class="top">
+    <div id="edit" v-if="editoff">
+      <div class="top" @click="editoffchenge()">
         编辑
         <img src="../assets/img/close.png"/>
       </div>
@@ -58,7 +58,11 @@
       return {
         MuseumNames: [],
         VRHandleInfo: [],
-
+        selectMuseumCode:undefined,
+        vrHandleCheckCode:undefined,
+        editoff:false,
+        startTime:'',
+        endTime:''
       }
     },
     beforeCreate(){
@@ -67,6 +71,40 @@
       }
     },
     mounted(){
+        //检索方法
+      //检索方法
+      $('.sel').find('.s1').on('click', function (e) {
+        this.startTime = $('#start-time').val();
+        this.endTime = $('#end-time').val();
+        console.log("开始时间:"+this.startTime);
+        console.log("结束时间:"+this.endTime)
+        this.searchInfo(this.selectMuseumCode, this.startTime, this.endTime);
+      });
+
+      $('.sel').find('.s2').on('click', function (e) {
+        this.startTime = $('#start-time').val();
+        this.endTime = $('#end-time').val();
+        var params = {
+          MuseumCode: this.selectMuseumCode || null,
+          StartDate: this.startTime || null,
+          EndDate: this.endTime || null
+        };
+        api.outputExcel(params).then(res =>{
+            console.log(res)
+        });
+      });
+
+      $('#city-name').on('change', function (e) {
+        var op = e.currentTarget;
+        console.log(op.options[op.selectedIndex].getAttribute('data-code'));
+        //console.log(e.currentTarget.selectedOptions[0].getAttribute('data-code'));
+        this.selectMuseumCode = op.options[op.selectedIndex].getAttribute('data-code') || undefined;
+        if(this.selectMuseumCode) {
+          this.startTime = $('#start-time').val();
+          this.endTime = $('#end-time').val();
+          this.searchInfo(this.selectMuseumCode, this.startTime, this.endTime);
+        }
+      });
       //设置开始日期控件
       $('#start-time').datetimepicker({
         format: "yyyy-mm-dd",
@@ -84,8 +122,13 @@
       this.getMuseumNames();
     },
     methods: {
+        //编辑开关
+      editoffchenge(){
+          this.editoff = true;
+      },
       //请求数据
       getVRHandleInfo(){
+
         api.getVRHandleInfoList().then(res => {
           //console.log(res)
           this.VRHandleInfo = res.data.Data.itemList;
@@ -109,7 +152,7 @@
         $('#e-theme').val(lsAttr[3]);
         $('#e-handle').val(lsAttr[4]);
         $('#e-state').val(lsAttr[5]);
-        vrHandleCheckCode = lsAttr[0];
+        this.vrHandleCheckCode = lsAttr[0];
       },
       //属性合并
       getAttributes(data) {
@@ -142,14 +185,19 @@
           OperNum: handleCount,
           SYNCSTATUS: staus === '' ? '同步成功' : staus
         };
-        VRHandle.editVRHandleCount(params, 'POST', function (result) {
-          var status = typeof result.Status === 'string' ? parseInt(result.Status) : result.Status;
-          var dataList = [];
-          if (status) {
-            VRHandle.getVRHandleInfoList({}, 'GET', loadMuseumHandleInfo);
-          }
-          else {
-            console.log('数据编辑失败!');
+        api.editVRHandleCount(params).then(res=>{
+          var status = typeof res.Status === 'string' ? parseInt(res.Status) : res.Status;
+          if(status){
+            //加载信息列表
+            api.getVRHandleInfoList().then(res=>{
+              this.loadMuseumHandleInfo(res);
+            });
+          }else{
+            this.$notify({
+              title: '警告',
+              message: '编辑信息失败！',
+              type: 'warning'
+            });
           }
         })
       },
@@ -194,7 +242,7 @@
               title: '日期',
               align: 'center',
               formatter: function (value, row, index) {
-                return row.OPERDATE.split('T')[0];//zlh 2017.07.06 日期仅显示年月日
+                return row.OPERDATE.split('T')[0];//日期仅显示年月日
               }
             },
             {

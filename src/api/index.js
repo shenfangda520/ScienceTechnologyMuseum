@@ -39,14 +39,14 @@ export default {
   /**
    * 获取科技馆信息列表
    */
-  getMuseumInfoList(pms,type) {
+  getMuseumInfoList(params,type) {
     return axios.get(getMuseumInfoListResource, {
-      regionName: pms.regionName || null,
-      museumCode: pms.museumCode || null,
-      museumName: pms.museumName || null,
-      runStatus: pms.runStatus || null,
-      pageIndex: pms.pageIndex || 0,
-      pageNum: pms.pageNum || 0
+      regionName: params.regionName || null,
+      museumCode: params.museumCode || null,
+      museumName: params.museumName || null,
+      runStatus: params.runStatus || null,
+      pageIndex: params.pageIndex || 0,
+      pageNum: params.pageNum || 0
     })
   },
 
@@ -67,7 +67,7 @@ export default {
    */
   delMuseum(params) {
     return  axios.post(delMuseumResource,{
-      '': pms.MuseumCode || null
+      '': params.MuseumCode || null
     })
   },
 
@@ -75,7 +75,11 @@ export default {
    * 编辑科技馆
    */
   editMuseumInfo(params) {
-    return  axios.post(editMuseumInfoResource,params)
+    return  axios.post(editMuseumInfoResource,{
+      OperID: params.OperID || null,
+      OperNum: params.OperNum || null,
+      SYNCSTATUS: params.SYNCSTATUS || '同步成功'
+    })
   },
 
   /**
@@ -96,27 +100,48 @@ export default {
    * 获取VR操作详细信息
    */
   getVRHandleInfoList(params) {
-    return  axios.get(getVRHandleInfoListResource, params)
+    return  axios.get(getVRHandleInfoListResource, {
+      MuseumCode: params.MuseumCode || null,
+      VrCode: params.VrCode || null,
+      StartDate: params.StartDate || null,
+      EndDate: params.EndDate || null,
+      PageIndex: params.PageIndex || null,
+      PageNum: params.PageNum || null
+    })
   },
 
   /**
    * 编辑VR操作次数
    */
   getPubTotravelNum(params) {
-    return  axios.get(getPubTotravelNumResource, params)
+    return  axios.get(getPubTotravelNumResource, {
+      OperID: params.OperID || null,
+      OperNum: params.OperNum || null,
+      SYNCSTATUS: params.SYNCSTATUS || '同步成功'
+    })
   },
 
   /**
    * 上传VR操作次数
    */
   uploadOperNumInfo(params) {
-    return  axios.get(uploadOperNumInfoResource, params)
+    // return  axios.get(uploadOperNumInfoResource, params)
   },
 
   /**
    * VR操作次数文件下载接口
    */
   outputExcel(params) {
-    return  axios.get(outputExcelResource,params)
+    var path = outputExcelResource;
+    return  axios.get(outputExcelResource,{
+      MuseumCode: params.MuseumCode,
+      VrCode: null,
+      StartDate: params.StartDate,
+      EndDate: params.EndDate,
+      PageIndex: null,
+      PageNum: null
+    })
+    path += "?MuseumCode=" + (params.MuseumCode || '') + '&StartDate=' +(params.StartDate || '') + '&EndDate=' + (params.EndDate || '');
+    window.location.href = path;
   }
 }
